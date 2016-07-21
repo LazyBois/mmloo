@@ -1,0 +1,15 @@
+
+.p-icon {
+    display: inline-block;
+    *display: inline;
+    *zoom: 1;
+    width: 18px;
+    height: 18px;
+    margin: 0 5px 0 0;
+    overflow: hidden;
+    background: url(purchase-icon.png) no-repeat;
+    vertical-align: middle;
+}
+.p-icon-w {
+    background-position: 0 -84px;
+}

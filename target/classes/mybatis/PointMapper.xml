@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nwsuaf.mmloo.dao.IPointDao">
+
+	<select id="getRowCount" resultType="int"  parameterType="String">
+		select count(*)
+		from point
+		where uname= #{uname}
+	</select>
+
+
+	<select id="selectByParams" resultType="Point" parameterType="map" useCache="true">
+		select *
+		from point
+		where uname= #{uname}
+		order by ptime DESC
+		limit
+		${offset}, ${size}
+	</select>
+
+	<select id="selectByPrimaryKey" parameterType="java.lang.Integer"
+		resultType="Point">
+		select *
+		from point
+		where pointid = #{pointid,jdbcType=INTEGER}
+	</select>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from point
+		where pointid = #{pointid,jdbcType=INTEGER}
+	</delete>
+
+
+	<insert id="insert" parameterType="Point">
+		insert into point (pointid, uname, pud,
+		pcomment, ptime)
+		values (#{pointid,jdbcType=INTEGER}, #{uname,jdbcType=VARCHAR},
+		#{pud,jdbcType=REAL},
+		#{pcomment,jdbcType=VARCHAR}, #{ptime,jdbcType=DATE})
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="Point">
+		update point
+		set uname = #{uname,jdbcType=VARCHAR},
+		pud = #{pud,jdbcType=REAL},
+		pcomment = #{pcomment,jdbcType=VARCHAR},
+		ptime = #{ptime,jdbcType=DATE}
+		where pointid = #{pointid,jdbcType=INTEGER}
+	</update>
+
+</mapper>

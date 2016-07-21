@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nwsuaf.mmloo.dao.IGparameterDao" >
+  <resultMap id="BaseResultMap" type="nwsuaf.mmloo.entity.Gparameter" >
+    <id column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="mname" property="mname" jdbcType="VARCHAR" />
+    <result column="ptitle" property="ptitle" jdbcType="VARCHAR" />
+    <result column="pname" property="pname" jdbcType="VARCHAR" />
+    <result column="pvalue" property="pvalue" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    pid, mname, ptitle, pname, pvalue
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" useCache="true">
+    select 
+    <include refid="Base_Column_List" />
+    from g_parameter
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from g_parameter
+    where pid = #{pid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="nwsuaf.mmloo.entity.Gparameter" >
+    insert into g_parameter (pid, mname, ptitle, 
+      pname, pvalue)
+    values (#{pid,jdbcType=INTEGER}, #{mname,jdbcType=VARCHAR}, #{ptitle,jdbcType=VARCHAR}, 
+      #{pname,jdbcType=VARCHAR}, #{pvalue,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="nwsuaf.mmloo.entity.Gparameter" >
+    insert into g_parameter
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="mname != null" >
+        mname,
+      </if>
+      <if test="ptitle != null" >
+        ptitle,
+      </if>
+      <if test="pname != null" >
+        pname,
+      </if>
+      <if test="pvalue != null" >
+        pvalue,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="pid != null" >
+        #{pid,jdbcType=INTEGER},
+      </if>
+      <if test="mname != null" >
+        #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="ptitle != null" >
+        #{ptitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pname != null" >
+        #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="pvalue != null" >
+        #{pvalue,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="nwsuaf.mmloo.entity.Gparameter" >
+    update g_parameter
+    <set >
+      <if test="mname != null" >
+        mname = #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="ptitle != null" >
+        ptitle = #{ptitle,jdbcType=VARCHAR},
+      </if>
+      <if test="pname != null" >
+        pname = #{pname,jdbcType=VARCHAR},
+      </if>
+      <if test="pvalue != null" >
+        pvalue = #{pvalue,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="nwsuaf.mmloo.entity.Gparameter" >
+    update g_parameter
+    set mname = #{mname,jdbcType=VARCHAR},
+      ptitle = #{ptitle,jdbcType=VARCHAR},
+      pname = #{pname,jdbcType=VARCHAR},
+      pvalue = #{pvalue,jdbcType=VARCHAR}
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+</mapper>

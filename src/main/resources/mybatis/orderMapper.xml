@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="nwsuaf.mmloo.dao.IOrderDao">
+
+	<resultMap type="Order" id="OrderList">
+		<id column="orderid" property="orderid" jdbcType="BIGINT" />
+		<result column="uname" property="uname" jdbcType="VARCHAR" />
+		<result column="mname" property="mname" jdbcType="VARCHAR" />
+		<result column="reinformation" property="reinformation"
+			jdbcType="VARCHAR" />
+		<result column="logid" property="logid" jdbcType="BIGINT" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="ordertime" property="ordertime" jdbcType="TIMESTAMP" />
+		<result column="stime" property="stime" jdbcType="TIMESTAMP" />
+		<result column="etime" property="etime" jdbcType="TIMESTAMP" />
+		<result column="paymethod" property="paymethod" jdbcType="VARCHAR" />
+		<result column="totalprice" property="totalprice" jdbcType="REAL" />
+		<result column="realtotalprice" property="realtotalprice"
+			jdbcType="REAL" />
+		<result column="distotalprice" property="distotalprice"
+			jdbcType="REAL" />
+		<result column="point" property="point" jdbcType="REAL" />
+		<result column="billkind" property="billkind" jdbcType="VARCHAR" />
+		<result column="billtitle" property="billtitle" jdbcType="VARCHAR" />
+		<result column="billcontent" property="billcontent" jdbcType="VARCHAR" />
+		<collection property="ordergs" ofType="Orderg" column="orderid"
+			select="selectOrdg"></collection>
+	</resultMap>
+
+	<resultMap id="ordergs" type="Orderg">
+		<id column="orderid" property="orderid" jdbcType="BIGINT" />
+		<id column="gid" property="gid" jdbcType="BIGINT" />
+		<result column="gdescribe" property="gdescribe" jdbcType="VARCHAR" />
+		<result column="gprice" property="gprice" jdbcType="REAL" />
+		<result column="gnumber" property="gnumber" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="VARCHAR" />
+		<result column="favorable" property="favorable" jdbcType="REAL" />
+		<association property="goods" column="gid" select="selectGoods" />
+	</resultMap>
+
+	<!-- 级联 -->
+	<select id="selectByParams" resultMap="OrderList" parameterType="map"
+		useCache="true">
+		select *
+		from ordert
+		where uname = ${uname}
+		<if test="state != null">
+			and status = ${state}
+		</if>
+		order by ordertime
+		DESC
+		limit ${offset}, ${size}
+	</select>
+	<select id="selectOrdg" resultMap="ordergs" parameterType="java.lang.Long"
+		useCache="true">
+		select *
+		from order_g
+		where orderid =
+		#{orderid,jdbcType=BIGINT}
+	</select>
+	<select id="selectGoods" resultType="Gshelves" parameterType="java.lang.Long"
+		useCache="true">
+		select *
+		from g_shelves
+		where gid = #{gid,jdbcType=BIGINT}
+	</select>
+
+	<select id="getRowCount" resultType="int" parameterType="map">
+		select count(*)
+		from ordert
+		where uname= ${uname}
+		<if test="state != null">
+			and status = ${state}
+		</if>
+	</select>
+
+	<insert id="insert" parameterType="Order" useGeneratedKeys="true"
+		keyProperty="orderid">
+
+		insert into ordert (orderid, uname, mname, reinformation,
+		status,
+		ordertime,
+		paymethod,
+		totalprice, realtotalprice, distotalprice,
+		billkind,
+		billtitle, billcontent
+		)
+		values ( #{orderid},
+		#{uname,jdbcType=VARCHAR},#{mname,jdbcType=VARCHAR},
+		#{reinformation,jdbcType=VARCHAR},
+		#{status,jdbcType=VARCHAR},
+		#{ordertime,jdbcType=DATE},
+		#{paymethod,jdbcType=VARCHAR},
+		#{totalprice,jdbcType=REAL}, #{realtotalprice,jdbcType=REAL},
+		#{distotalprice,jdbcType=REAL},
+		#{billkind,jdbcType=VARCHAR},
+		#{billtitle,jdbcType=VARCHAR},
+		#{billcontent,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<select id="selectID" resultType="Long">
+		select max(orderid)
+		from ordert
+	</select>
+
+	<update id="updateByPrimaryKey" parameterType="Order">
+		update ordert
+		<set>
+			<if test="uname != null">
+				uname = #{uname,jdbcType=VARCHAR},
+			</if>
+			<if test="mname != null">
+				mname = #{mname,jdbcType=VARCHAR},
+			</if>
+			<if test="reinformation != null">
+				reinformation = #{reinformation,jdbcType=VARCHAR},
+			</if>
+			<if test="logid != null">
+				logid = #{logid,jdbcType=BIGINT},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=VARCHAR},
+			</if>
+			<if test="ordertime != null">
+				ordertime = #{ordertime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="stime != null">
+				stime = #{stime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="etime != null">
+				etime = #{etime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="paymethod != null">
+				paymethod = #{paymethod,jdbcType=VARCHAR},
+			</if>
+			<if test="totalprice != null">
+				totalprice = #{totalprice,jdbcType=REAL},
+			</if>
+			<if test="realtotalprice != null">
+				realtotalprice = #{realtotalprice,jdbcType=REAL},
+			</if>
+			<if test="distotalprice != null">
+				distotalprice = #{distotalprice,jdbcType=REAL},
+			</if>
+			<if test="point != null">
+				point = #{point,jdbcType=REAL},
+			</if>
+			<if test="billkind != null">
+				billkind = #{billkind,jdbcType=VARCHAR},
+			</if>
+			<if test="billtitle != null">
+				billtitle = #{billtitle,jdbcType=VARCHAR},
+			</if>
+			<if test="billcontent != null">
+				billcontent = #{billcontent,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where orderid = #{orderid,jdbcType=BIGINT}
+	</update>
+
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from ordert
+		where orderid = #{orderid,jdbcType=INTEGER}
+	</delete>
+
+	<insert id="insertOrderg" parameterType="Orderg">
+		insert into order_g
+		(orderid, gid, gdescribe,
+		gprice, gnumber, 
+		favorable)
+		values
+		(#{orderid,jdbcType=BIGINT}, #{gid,jdbcType=BIGINT},
+		#{gdescribe,jdbcType=VARCHAR},
+		#{gprice,jdbcType=REAL},
+		#{gnumber,jdbcType=INTEGER}, 
+		#{favorable,jdbcType=REAL})
+	</insert>
+
+
+</mapper>

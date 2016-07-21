@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nwsuaf.mmloo.dao.IGupdateDao" >
+  <resultMap id="BaseResultMap" type="nwsuaf.mmloo.entity.Gupdate" >
+    <result column="gid" property="gid" jdbcType="INTEGER" />
+    <result column="content" property="content" jdbcType="VARCHAR" />
+    <result column="updatenum" property="updatenum" jdbcType="REAL" />
+    <result column="updatetime" property="updatetime" jdbcType="DATE" />
+  </resultMap>
+  <insert id="insert" parameterType="nwsuaf.mmloo.entity.Gupdate" >
+    insert into g_update (gid, content, updatenum, 
+      updatetime)
+    values (#{gid,jdbcType=INTEGER}, #{content,jdbcType=VARCHAR}, #{updatenum,jdbcType=REAL}, 
+      #{updatetime,jdbcType=DATE})
+  </insert>
+  <insert id="insertSelective" parameterType="nwsuaf.mmloo.entity.Gupdate" >
+    insert into g_update
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="content != null" >
+        content,
+      </if>
+      <if test="updatenum != null" >
+        updatenum,
+      </if>
+      <if test="updatetime != null" >
+        updatetime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="content != null" >
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="updatenum != null" >
+        #{updatenum,jdbcType=REAL},
+      </if>
+      <if test="updatetime != null" >
+        #{updatetime,jdbcType=DATE},
+      </if>
+    </trim>
+  </insert>
+</mapper>

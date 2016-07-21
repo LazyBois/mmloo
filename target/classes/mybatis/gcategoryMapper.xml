@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nwsuaf.mmloo.dao.IGcategoryDao" >
+  
+  <!-- 增加商品分类 -->
+  <insert id="insert" parameterType="Gcategory" >
+    insert into g_category (gid, mname, classification)
+    values (#{gid,jdbcType=INTEGER}, #{mname,jdbcType=VARCHAR}, #{classification,jdbcType=VARCHAR})
+  </insert>
+  
+  <!-- 修改商品分类 -->
+  <update id="updateClassification" parameterType="Gcategory" >
+    update g_category
+    set gid = #{gid,jdbcType=BIGINT},
+      mname = #{mname,jdbcType=VARCHAR},
+      classification = #{classification,jdbcType=VARCHAR},
+    where classification = #{classification,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 删除商品分类 -->
+  <delete id="deleteClassification" parameterType="java.lang.Long" >
+    delete from g_category
+    where classification = #{classification,jdbcType=VARCHAR}
+  </delete>
+  
+  <!-- 商品分类列表 -->
+  <select id="getAllClassification" resultType="Gcategory" parameterType="Gcategory" useCache="true">
+		select * from g_category
+	</select>
+  <!-- 选择商品分类 -->
+<select id="selectByPrimaryKey" resultType="Gcategory" parameterType="java.lang.Long" useCache="true">
+    select *
+    from g_category
+    where gid = #{gid,jdbcType=BIGINT}
+  </select>
+  
+  <insert id="insertSelective" parameterType="Gcategory" >
+    insert into g_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        gid,
+      </if>
+      <if test="mname != null" >
+        mname,
+      </if>
+      <if test="classification != null" >
+        classification,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="gid != null" >
+        #{gid,jdbcType=INTEGER},
+      </if>
+      <if test="mname != null" >
+        #{mname,jdbcType=VARCHAR},
+      </if>
+      <if test="classification != null" >
+        #{classification,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

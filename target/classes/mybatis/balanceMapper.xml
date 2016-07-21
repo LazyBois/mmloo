@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nwsuaf.mmloo.dao.IBalanceDao" >
+
+<select id="getRowCount" resultType="int" parameterType="String">
+		select count(*)
+		from balance
+		where uname= #{uname}
+</select>
+
+
+<select id="selectByParams" resultType="Balance" parameterType="map" useCache="true">
+		select *
+		from balance
+		where uname= #{uname}
+		order by date DESC
+		limit ${offset}, ${size}
+</select>
+
+  <select id="selectByPrimaryKey" resultType="Balance" parameterType="java.lang.Long" >
+    select *
+    from balance
+    where bid = #{bid,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from balance
+    where bid = #{bid,jdbcType=BIGINT}
+  </delete>
+  
+  <insert id="insert" parameterType="Balance" >
+    insert into balance (uname, date, 
+      put, removes, describes)
+    values ( #{uname,jdbcType=VARCHAR}, #{date,jdbcType=TIMESTAMP}, 
+      #{put,jdbcType=REAL}, #{removes,jdbcType=REAL}, #{describes,jdbcType=VARCHAR})
+  </insert>
+  
+
+  <update id="updateByPrimaryKey" parameterType="Balance" >
+    update balance
+    set uname = #{uname,jdbcType=VARCHAR},
+      date = #{date,jdbcType=TIMESTAMP},
+      put = #{put,jdbcType=REAL},
+      removes = #{removes,jdbcType=REAL},
+      describes = #{describes,jdbcType=VARCHAR}
+    where bid = #{bid,jdbcType=BIGINT}
+  </update>
+  
+</mapper>

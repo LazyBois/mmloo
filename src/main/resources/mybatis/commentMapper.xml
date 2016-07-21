@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nwsuaf.mmloo.dao.ICommentDao" >
+
+
+  <select id="selectByMkid" resultType="Comment" parameterType="String" >
+    select *
+    from comment
+    where mkid = #{mkid}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from comment
+    where commentid = #{commentid,jdbcType=INTEGER}
+  </delete>
+  
+  <insert id="insert" parameterType="Comment" >
+    insert into comment ( rcommentid, uname, 
+      orderid, gpro, mkid, 
+      gid, level, reply, sattitude, 
+      gpack, satisfaction, dspeed, 
+      cdate)
+    values (#{rcommentid,jdbcType=INTEGER}, #{uname,jdbcType=VARCHAR}, 
+      #{orderid,jdbcType=INTEGER}, #{gpro,jdbcType=VARCHAR}, #{mkid,jdbcType=INTEGER}, 
+      #{gid,jdbcType=BIGINT}, #{level,jdbcType=VARCHAR}, #{reply,jdbcType=VARCHAR}, #{sattitude,jdbcType=INTEGER}, 
+      #{gpack,jdbcType=INTEGER}, #{satisfaction,jdbcType=INTEGER}, #{dspeed,jdbcType=INTEGER}, 
+      #{cdate,jdbcType=DATE})
+  </insert>
+</mapper>

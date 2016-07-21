@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nwsuaf.mmloo.dao.IGshelvesDao">
+	<resultMap id="GshelvesList" type="Gshelves">
+		<id column="gid" property="gid" jdbcType="BIGINT" />
+		<result column="mid" property="mid" jdbcType="BIGINT" />
+		<result column="kid" property="kid" jdbcType="INTEGER" />
+		<result column="selfid" property="selfid" jdbcType="INTEGER" />
+		<result column="gpid" property="gpid" jdbcType="INTEGER" />
+		<result column="pid" property="pid" jdbcType="INTEGER" />
+		<result column="gname" property="gname" jdbcType="VARCHAR" />
+		<result column="choproperty" property="choproperty" jdbcType="VARCHAR" />
+		<result column="selfimage" property="selfimage" jdbcType="VARCHAR" />
+		<result column="num" property="num" jdbcType="INTEGER" />
+		<result column="gprice" property="gprice" jdbcType="REAL" />
+		<result column="state" property="state" jdbcType="VARCHAR" />
+		<result column="notestate" property="notestate" jdbcType="VARCHAR" />
+		<result column="date" property="date" jdbcType="TIMESTAMP" />
+		<!-- 一对多 -->
+		<collection property="gro" ofType="Gpropert" column="gpid"
+			select="selectGroByGid"></collection>
+			
+		<collection property="gpa" ofType="Gparameter" column="pid"
+			select="selectGpaBygid"></collection>
+	</resultMap>
+	
+	<!-- 级联查询商品属性和参数 -->
+	<!-- 商品 -->
+	<select id="selectByMid" resultMap="GshelvesList" parameterType="int"
+		useCache="true">
+		select *
+		from g_shelves
+		where mid = #{mid}
+	</select>
+	
+	<select id="selectByPrimaryKey" resultMap="GshelvesList" parameterType="Long" useCache="true">
+		select *
+		from g_shelves
+		where gid = #{gid,jdbcType=BIGINT}
+	</select>
+	<!-- 商品属性 -->
+	<select id="selectGroByGid" resultType="Gpropert" parameterType="INTEGER" useCache="true">
+		select *
+		from g_propert
+		where gpid = #{gpid}
+	</select>	
+	
+	<!-- 商品参数 -->
+	<select id="selectGpaBygid" resultType="Gparameter" parameterType="INTEGER" useCache="true">
+		select *
+		from g_parameter
+		where pid = #{pid}
+	</select>
+	<!-- 一对一关联查询 -->
+	
+	<!-- 商品上架列表 -->
+	<select id="getAllGshelves" resultType="Gshelves"
+		parameterType="Gshelves" useCache="true">
+		select * from g_shelves
+	</select>
+
+	<!-- 前台按商品编号检索 -->
+	<select id="selectByPrimaryKey1" resultType="Gshelves"
+		parameterType="java.lang.Long" useCache="true">
+		select *
+		from g_shelves
+		where mid = #{mid,jdbcType=BIGINT}
+		OR kid = #{kid,jdbcType=INTEGER}
+		OR gid = #{gid,jdbcType=BIGINT}
+		and state = "通过"
+	</select>
+
+	<!-- 前台按商品名称检索 -->
+	<select id="selectByGname" resultType="Gshelves"
+		parameterType="Gshelves" useCache="true">
+		select *
+		from g_shelves
+		where gname LIKE concat(cancat('%',#{gname}),'%')
+		and state = "通过"
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+		delete from g_shelves
+		where gid = #{gid,jdbcType=BIGINT}
+	</delete>
+	<insert id="insert" parameterType="nwsuaf.mmloo.entity.Gshelves">
+		insert into g_shelves (gid, mid, kid,
+		selfid, gpid, pid,
+		gname, choproperty, selfimage,
+		num, gprice, state, notestate,
+		date)
+		values (#{gid,jdbcType=BIGINT}, #{mid,jdbcType=BIGINT},
+		#{kid,jdbcType=INTEGER},
+		#{selfid,jdbcType=INTEGER}, #{gpid,jdbcType=INTEGER}, #{pid,jdbcType=INTEGER},
+		#{gname,jdbcType=VARCHAR}, #{choproperty,jdbcType=VARCHAR},
+		#{selfimage,jdbcType=VARCHAR},
+		#{num,jdbcType=INTEGER}, #{gprice,jdbcType=REAL}, #{state,jdbcType=VARCHAR},
+		#{notestate,jdbcType=VARCHAR},
+		#{date,jdbcType=TIMESTAMP})
+	</insert>
+	<insert id="insertSelective" parameterType="nwsuaf.mmloo.entity.Gshelves">
+		insert into g_shelves
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="gid != null">
+				gid,
+			</if>
+			<if test="mid != null">
+				mid,
+			</if>
+			<if test="kid != null">
+				kid,
+			</if>
+			<if test="selfid != null">
+				selfid,
+			</if>
+			<if test="gpid != null">
+				gpid,
+			</if>
+			<if test="pid != null">
+				pid,
+			</if>
+			<if test="gname != null">
+				gname,
+			</if>
+			<if test="choproperty != null">
+				choproperty,
+			</if>
+			<if test="selfimage != null">
+				selfimage,
+			</if>
+			<if test="num != null">
+				num,
+			</if>
+			<if test="gprice != null">
+				gprice,
+			</if>
+			<if test="state != null">
+				state,
+			</if>
+			<if test="notestate != null">
+				notestate,
+			</if>
+			<if test="date != null">
+				date,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="gid != null">
+				#{gid,jdbcType=BIGINT},
+			</if>
+			<if test="mid != null">
+				#{mid,jdbcType=BIGINT},
+			</if>
+			<if test="kid != null">
+				#{kid,jdbcType=INTEGER},
+			</if>
+			<if test="selfid != null">
+				#{selfid,jdbcType=INTEGER},
+			</if>
+			<if test="gpid != null">
+				#{gpid,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				#{pid,jdbcType=INTEGER},
+			</if>
+			<if test="gname != null">
+				#{gname,jdbcType=VARCHAR},
+			</if>
+			<if test="choproperty != null">
+				#{choproperty,jdbcType=VARCHAR},
+			</if>
+			<if test="selfimage != null">
+				#{selfimage,jdbcType=VARCHAR},
+			</if>
+			<if test="num != null">
+				#{num,jdbcType=INTEGER},
+			</if>
+			<if test="gprice != null">
+				#{gprice,jdbcType=REAL},
+			</if>
+			<if test="state != null">
+				#{state,jdbcType=VARCHAR},
+			</if>
+			<if test="notestate != null">
+				#{notestate,jdbcType=VARCHAR},
+			</if>
+			<if test="date != null">
+				#{date,jdbcType=TIMESTAMP},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="nwsuaf.mmloo.entity.Gshelves">
+		update g_shelves
+		<set>
+			<if test="mid != null">
+				mid = #{mid,jdbcType=BIGINT},
+			</if>
+			<if test="kid != null">
+				kid = #{kid,jdbcType=INTEGER},
+			</if>
+			<if test="selfid != null">
+				selfid = #{selfid,jdbcType=INTEGER},
+			</if>
+			<if test="gpid != null">
+				gpid = #{gpid,jdbcType=INTEGER},
+			</if>
+			<if test="pid != null">
+				pid = #{pid,jdbcType=INTEGER},
+			</if>
+			<if test="gname != null">
+				gname = #{gname,jdbcType=VARCHAR},
+			</if>
+			<if test="choproperty != null">
+				choproperty = #{choproperty,jdbcType=VARCHAR},
+			</if>
+			<if test="selfimage != null">
+				selfimage = #{selfimage,jdbcType=VARCHAR},
+			</if>
+			<if test="num != null">
+				num = #{num,jdbcType=INTEGER},
+			</if>
+			<if test="gprice != null">
+				gprice = #{gprice,jdbcType=REAL},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="notestate != null">
+				notestate = #{notestate,jdbcType=VARCHAR},
+			</if>
+			<if test="date != null">
+				date = #{date,jdbcType=TIMESTAMP},
+			</if>
+		</set>
+		where gid = #{gid,jdbcType=BIGINT}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="nwsuaf.mmloo.entity.Gshelves">
+		update g_shelves
+		set mid = #{mid,jdbcType=BIGINT},
+		kid = #{kid,jdbcType=INTEGER},
+		selfid = #{selfid,jdbcType=INTEGER},
+		gpid = #{gpid,jdbcType=INTEGER},
+		pid = #{pid,jdbcType=INTEGER},
+		gname = #{gname,jdbcType=VARCHAR},
+		choproperty = #{choproperty,jdbcType=VARCHAR},
+		selfimage = #{selfimage,jdbcType=VARCHAR},
+		num = #{num,jdbcType=INTEGER},
+		gprice = #{gprice,jdbcType=REAL},
+		state = #{state,jdbcType=VARCHAR},
+		notestate = #{notestate,jdbcType=VARCHAR},
+		date = #{date,jdbcType=TIMESTAMP}
+		where gid = #{gid,jdbcType=BIGINT}
+	</update>
+	<insert id="insertList" parameterType="java.util.List">
+
+		insert into g_shelves (gid, mid, kid,
+		selfid, gpid, pid,
+		gname,
+		choproperty, selfimage,
+		num, gprice, state) values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(#{item.gid,jdbcType=BIGINT}, #{item.mid,jdbcType=BIGINT},
+			#{item.kid,jdbcType=INTEGER},
+			#{item.selfid,jdbcType=INTEGER},
+			#{item.gpid,jdbcType=INTEGER},
+			#{item.pid,jdbcType=INTEGER},
+			#{item.gname,jdbcType=VARCHAR}, #{item.choproperty,jdbcType=VARCHAR},
+			#{item.selfimage,jdbcType=VARCHAR},
+			#{item.num,jdbcType=REAL},
+			#{item.gprice,jdbcType=REAL}, #{item.state,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+		<!-- 模糊查询start -->
+
+	<select id="getRowCountKey" resultType="int" parameterType="map">
+		select count(*)
+		from g_shelves
+		where state = '通过'
+		<if test="key != null">
+			and (
+			gid like CONCAT('%', ${key}, '%')
+			or gname like CONCAT('%', ${key}, '%')
+			)
+		</if>
+	</select>
+
+	<select id="selectByKey" resultType="Gshelves" parameterType="map"
+		useCache="true">
+		select *
+		from g_shelves
+		where state = '通过'
+		<if test="key != null">
+			and (
+			gid like CONCAT('%', ${key}, '%')
+			or gname like CONCAT('%', ${key}, '%')
+			)
+		</if>
+		order by date DESC
+		limit ${offset}, ${size}
+	</select>
+	<!-- 模糊查询end -->
+	
+		<select id="getRowCount" resultType="int" parameterType="map">
+		select
+		count(*)
+		from g_shelves
+		where state = ${state}
+	</select>
+
+	<select id="selectByParams" resultType="Gshelves" parameterType="map"
+		useCache="true">
+		select *
+		from g_shelves
+		where state = ${state}
+		order by mid
+		ASC,date DESC
+		limit ${offset}, ${size}
+	</select>
+</mapper>

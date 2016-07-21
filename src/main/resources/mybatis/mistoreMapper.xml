@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nwsuaf.mmloo.dao.IMistoreDao">
+
+	<select id="getRowCount" resultType="int" parameterType="map">
+		select count(*)
+		from mistore
+		where 1 = 1
+		<if test="state != null">
+			and state= ${state}
+		</if>
+		<if test="point != null">
+			and point &lt; ${point}
+		</if>
+	</select>
+
+
+	<select id="selectByParams" resultType="Mistore" parameterType="map"
+		useCache="true">
+		select *
+		from mistore
+		where 1 = 1
+		<if test="state != null">
+			and state= ${state}
+		</if>
+		<if test="point != null">
+			and point &lt; ${point}
+		</if>
+		order by ctime DESC
+		limit ${offset}, ${size}
+	</select>
+
+	<select id="selectByMname" parameterType="java.lang.String"
+		resultType="Mistore">
+		select *
+		from mistore
+		where mname = #{mname,jdbcType=VARCHAR}
+	</select>
+	<select id="selectByUname" parameterType="java.lang.String"
+		resultType="Mistore">
+		select *
+		from mistore
+		where uname = #{uname,jdbcType=VARCHAR}
+	</select>
+	
+
+	<select id="selectByPro" parameterType="Mistore" resultType="Mistore">
+		select *
+		from mistore
+		<trim prefix="where" prefixOverrides="and |or">
+			<if test="uname != null">
+				uname = #{uname,jdbcType=VARCHAR},
+			</if>
+			<if test="logo != null">
+				and logo = #{logo,jdbcType=VARCHAR},
+			</if>
+			<if test="mtype != null">
+				and mtype = #{mtype,jdbcType=VARCHAR},
+			</if>
+			<if test="mcompany != null">
+				and mcompany = #{mcompany,jdbcType=VARCHAR},
+			</if>
+			<if test="brandinfo != null">
+				and brandinfo = #{brandinfo,jdbcType=VARCHAR},
+			</if>
+			<if test="industry != null">
+				and industry = #{industry,jdbcType=VARCHAR},
+			</if>
+			<if test="notes != null">
+				and notes = #{notes,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				and state = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="ctime != null">
+				and ctime = #{ctime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="cnote != null">
+				and cnote = #{cnote,jdbcType=VARCHAR},
+			</if>
+			<if test="payway != null">
+				and payway = #{payway,jdbcType=VARCHAR},
+			</if>
+			<if test="sendway != null">
+				and sendway = #{sendway,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</select>
+
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		mistore
+		where mname = #{mname,jdbcType=VARCHAR}
+	</delete>
+
+	<insert id="insert" parameterType="Mistore">
+		insert into mistore ( mname,
+		uname,
+		logo, mtype, mcompany,
+		brandinfo, industry, notes,
+		state, ctime, cnote,
+		payway, sendway, point
+		)
+		values ( #{mname,jdbcType=VARCHAR}, #{uname,jdbcType=VARCHAR},
+		#{logo,jdbcType=VARCHAR}, #{mtype,jdbcType=VARCHAR},
+		#{mcompany,jdbcType=VARCHAR},
+		#{brandinfo,jdbcType=VARCHAR}, #{industry,jdbcType=VARCHAR}, #{notes,jdbcType=VARCHAR},
+		#{state,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP},
+		#{cnote,jdbcType=VARCHAR},
+		#{payway,jdbcType=VARCHAR}, #{sendway,jdbcType=VARCHAR}, #{point,jdbcType=REAL}
+		)
+	</insert>
+
+	<update id="updateByPrimaryKey" parameterType="Mistore">
+		update mistore
+		<set>
+			<if test="mname != null">
+				mname = #{mname,jdbcType=VARCHAR},
+			</if>
+			<if test="uname != null">
+				uname = #{uname,jdbcType=VARCHAR},
+			</if>
+			<if test="logo != null">
+				logo = #{logo,jdbcType=VARCHAR},
+			</if>
+			<if test="mtype != null">
+				mtype = #{mtype,jdbcType=VARCHAR},
+			</if>
+			<if test="mcompany != null">
+				mcompany = #{mcompany,jdbcType=VARCHAR},
+			</if>
+			<if test="brandinfo != null">
+				brandinfo = #{brandinfo,jdbcType=VARCHAR},
+			</if>
+			<if test="industry != null">
+				industry = #{industry,jdbcType=VARCHAR},
+			</if>
+			<if test="notes != null">
+				notes = #{notes,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="ctime != null">
+				ctime = #{ctime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="cnote != null">
+				cnote = #{cnote,jdbcType=VARCHAR},
+			</if>
+			<if test="payway != null">
+				payway = #{payway,jdbcType=VARCHAR},
+			</if>
+			<if test="sendway != null">
+				sendway = #{sendway,jdbcType=VARCHAR},
+			</if>
+			<if test="point != null">
+				point = #{point,jdbcType=REAL},
+			</if>
+		</set>
+		where
+		<if test="mname != null">
+			mname = #{mname,jdbcType=VARCHAR}
+		</if>
+		<if test="mid != null">
+			or mid = #{mid,jdbcType=INTEGER}
+		</if>
+	</update>
+
+	<update id="upStateById" parameterType="Mistore">
+		update mistore
+		state =
+		#{state,jdbcType=VARCHAR}
+		where mid = #{mid,jdbcType=INTEGER},
+	</update>
+
+	<update id="updateByPro" parameterType="Mistore">
+		update mistore
+		<set>
+			<if test="uname != null">
+				uname = #{uname,jdbcType=VARCHAR},
+			</if>
+			<if test="logo != null">
+				logo = #{logo,jdbcType=VARCHAR},
+			</if>
+			<if test="mtype != null">
+				mtype = #{mtype,jdbcType=VARCHAR},
+			</if>
+			<if test="mcompany != null">
+				mcompany = #{mcompany,jdbcType=VARCHAR},
+			</if>
+			<if test="brandinfo != null">
+				brandinfo = #{brandinfo,jdbcType=VARCHAR},
+			</if>
+			<if test="industry != null">
+				industry = #{industry,jdbcType=VARCHAR},
+			</if>
+			<if test="notes != null">
+				notes = #{notes,jdbcType=VARCHAR},
+			</if>
+			<if test="state != null">
+				state = #{state,jdbcType=VARCHAR},
+			</if>
+			<if test="ctime != null">
+				ctime = #{ctime,jdbcType=TIMESTAMP},
+			</if>
+			<if test="cnote != null">
+				cnote = #{cnote,jdbcType=VARCHAR},
+			</if>
+			<if test="payway != null">
+				payway = #{payway,jdbcType=VARCHAR},
+			</if>
+			<if test="sendway != null">
+				sendway = #{sendway,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where
+		<if test="mname != null">
+			mname = #{mname,jdbcType=VARCHAR},
+		</if>
+		<if test="mname != null">
+			or miid = #{miid,jdbcType=INTEGER},
+		</if>
+	</update>
+
+</mapper>

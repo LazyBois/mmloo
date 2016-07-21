@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="nwsuaf.mmloo.dao.IShopcartDao">
+
+
+	<!--级联查询 ：先根据用户名查询购物车 然后根据购物车提供的商品编号属性 查询商品上架表 中 属性列：商品略缩图 商品名称 商品价格 可选属性 
+		店号 然后根据店号 查询米店表 获取店名 -->
+
+	<resultMap id="shopMap" type="Shopcart">
+		<result column="uname" jdbcType="VARCHAR" property="uname" />
+		<result column="gid" jdbcType="BIGINT" property="gid" />
+		<result column="snum" jdbcType="INTEGER" property="snum" />
+		<result column="date" jdbcType="DATE" property="date" />
+		<association property="goods" column="gid" select="selectGoods" />
+	</resultMap>
+
+	<resultMap id="goodMap" type="Gshelves">
+		<id column="gid" property="gid" jdbcType="BIGINT" />
+		<result column="mid" property="mid" jdbcType="BIGINT" />
+		<result column="gname" property="gname" jdbcType="VARCHAR" />
+		<result column="choproperty" property="choproperty" jdbcType="VARCHAR" />
+		<result column="selfimage" property="selfimage" jdbcType="VARCHAR" />
+		<result column="gprice" property="gprice" jdbcType="REAL" />
+		<association property="mistore" column="mid" select="selectMistroe" />
+	</resultMap>
+
+
+	<select id="selectByUnameGid" resultMap="shopMap">
+		select *
+		from shopcart
+		where uname= #{0} and gid = #{1}
+	</select>
+	
+	<!-- 购物车和商品的级联查询 -->
+	<select id="getAllByUname" resultMap="shopMap" parameterType="String">
+		select *
+		from shopcart
+		where uname= #{uname}
+		order by date DESC
+	</select>
+
+	<select id="selectGoods" resultMap="goodMap" parameterType="LONG">
+		select *
+		from g_shelves
+		where gid = #{gid,jdbcType=BIGINT}
+	</select>
+
+	<select id="selectMistroe" resultType="Mistore" parameterType="INTEGER">
+		select mid,mname
+		from mistore
+		where mid = #{mid,jdbcType=INTEGER}
+	</select>
+
+	<!-- 删除 -->
+	<delete id="deleteById" parameterType="Shopcart">
+		delete from shopcart
+		where
+		gid=#{gid}
+	</delete>
+
+	<!-- 插入一条记录 -->
+	<insert id="insertShopCart" parameterType="Shopcart">
+		insert into
+		Shopcart(uname,gid,snum, date)
+		values
+		(#{uname},#{gid},#{snum}, #{date})
+	</insert>
+	
+	<update id="update" parameterType="Shopcart" >
+    update user
+    <set >
+      <if test="snum != null" >
+        snum= #{snum,jdbcType=INTEGER},
+      </if>
+      <if test="date != null" >
+        date= #{date,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where uname = #{uname} and gid=#{gid}
+  </update>
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+	</settings>
+	
+	<typeAliases>
+		<typeAlias alias="User" type="nwsuaf.mmloo.entity.User" />
+		<typeAlias alias="Address" type="nwsuaf.mmloo.entity.Address" />
+		<typeAlias alias="Shopcart" type="nwsuaf.mmloo.entity.Shopcart" />
+		<typeAlias alias="Order" type="nwsuaf.mmloo.entity.Order" />
+		<typeAlias alias="Orderg" type="nwsuaf.mmloo.entity.Orderg" />
+		<typeAlias alias="Logistics" type="nwsuaf.mmloo.entity.Logistics" />
+		<typeAlias alias="Gshelves" type="nwsuaf.mmloo.entity.Gshelves" />
+		<typeAlias alias="Gpropert" type="nwsuaf.mmloo.entity.Gpropert" />
+		<typeAlias alias="Gparameter" type="nwsuaf.mmloo.entity.Gparameter" />
+		<typeAlias alias="Gcategory" type="nwsuaf.mmloo.entity.Gcategory" />
+		<typeAlias alias="Gupdate" type="nwsuaf.mmloo.entity.Gupdate" />
+		<typeAlias alias="Scan" type="nwsuaf.mmloo.entity.Scan" />
+		<typeAlias alias="Balance" type="nwsuaf.mmloo.entity.Balance" />
+		<typeAlias alias="Point" type="nwsuaf.mmloo.entity.Point" />
+		<typeAlias alias="Mistore" type="nwsuaf.mmloo.entity.Mistore" />
+		<typeAlias alias="Mpoint" type="nwsuaf.mmloo.entity.Mpoint" />
+		<typeAlias alias="Comment" type="nwsuaf.mmloo.entity.Comment" />
+	</typeAliases>
+	
+</configuration>

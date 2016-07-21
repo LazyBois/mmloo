@@ -1,0 +1,199 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta charset="utf-8" />
+</head>
+<script>
+    $(document).ready(function() {
+        $('#addrForm').bootstrapValidator({
+            message: 'This value is not valid',
+            feedbackIcons: {
+                valid: 'glyphicon glyphicon-ok',
+                invalid: 'glyphicon glyphicon-remove',
+                validating: 'glyphicon glyphicon-refresh'
+            },
+            fields: {
+                uname: {
+                    message: 'The username is not valid',
+                    validators: {
+                        notEmpty: {
+                            message: '用户名不能为空'
+                        },
+                        stringLength: {
+                            min: 2,
+                            max: 30,
+                            message: '用户名长度在6到30个字符直接'
+                        },
+                        regexp: {
+                            regexp: /^([\u4e00-\u9fa5]{2,4})/,
+                            message: '用户名必须是数字或字符组成，不能有特殊字符'
+                        }
+                    }
+                },
+                city: {
+                    validators: {
+                        notEmpty: {
+                            message: '请选择收货地址'
+                        },
+                        regexp: {
+                            regexp: /^([\u4e00-\u9fa5]){1,10}/,
+                            message: '请选择收货地址'
+                        }
+                    }
+                },
+                addr_info: {
+                    validators: {
+                        notEmpty: {
+                            message: '详细地址不能为空'
+                        }
+                    }
+                },
+                mobilephone: {
+                    message: 'The input is not a valid US phone number',
+                    validators: {
+                        notEmpty: {
+                            message: '手机号不能为空'
+                        },
+                        stringLength: {
+                            min: 11,
+                            max: 11,
+                            message: '请输入11位手机号码'
+                        },
+                        regexp: {
+                            regexp: /^(13[0-9]|14[0-9]|15[0-9]|18[0-9])\d{8}$/,
+                            message: '请输入正确的手机号码'
+                        }
+                    }
+                },
+            }
+            
+        }).on('success.form.bv', function(e) {
+            // Prevent form submission
+            e.preventDefault();
+            // Get the form instance
+            var $form = $(e.target);
+            var ajaxUrl = "";
+			if( $('#addrModal').find('.modal-header').find('span').text() == '编辑地址')
+				ajaxUrl = "user/upAddress.do";
+			else
+				ajaxUrl = "user/addAddress.do";
+			var addr = $('#city').val().split('-');
+			
+			if(addr.length != 3){
+				alert('所在地区输入错误，请重新选择');
+				return;
+			}
+            // Get the BootstrapValidator instance
+            var bv = $form.data('bootstrapValidator');
+            $.ajax({
+             	type : "POST",
+            	url: ajaxUrl,
+                dataType: "json",
+                data :{ rname : $('#uname1').val(), province : addr[0],  city :addr[1], country : addr[2], town :"",  address : $('#addr_info').val(), addressid: $('#addressid').val(),
+                	    remail : $('#email').val(), phone : $('#mobilephone').val(), tel : $('input[name=telephone]').val() , addressalias :$('#aliasName').val()}, 
+                beforeSend : function() {
+					alert()
+           		}, 
+                success: function(msg){
+                    /**
+                     * 如果提交表单成功，即添加或修改收货地址
+                     */
+                    alert(msg);
+                    if($('#addrModal').hasClass('personInfo')){
+                    	$('.addressList div').remove();
+                    	isAddress();
+                    	$("#close1").click();
+                    }else{
+                    	alert('submitCart');
+                    }
+                },
+                error : function(msg) {
+                // 请求出错处理
+                	alert('请求出错');
+                	alert(msg.status)
+            	}
+            });
+            e.preventDefault();
+        });
+    });
+</script>
+<body>
+    <div class="modal-dialog" style="border-radius: 0;height: 540px; width: 840px;">
+        <div class="modal-content" style="border-radius: 0;border: 1px red solid; height: 100%;">
+            <div class="modal-header" style="background: gainsboro; height: 40px;padding-top: 10px;">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <span>添加地址</span>
+            </div>
+            <form id="addrForm" class="form-horizontal">
+                <div class="modal-body" style="border: 0;">
+                <input type="text" id="addressid" style="display:none"/>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">用户名：</label>
+                        <div class="col-lg-7" style="border-radius: 0;">
+                            <input type="text" class="form-control input-sm" size="60" id="uname1" name="uname1" style="border-radius: 0;"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">所在地区：</label>
+                        <div class="col-lg-7" style="border-radius: 0;">
+                            <input type="text" class="form-control input-sm" size="60" id="city" name="city" style="border-radius: 0;" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">详细地址：</label>
+                        <div class="col-lg-7" style="border-radius: 0;">
+                            <input type="text" class="form-control input-sm" size="60" id="addr_info" name="addr_info" style="border-radius: 0;"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">手机号码：</label>
+                        <div class="col-lg-7" style="border-radius: 0;">
+                            <input type="text" class="form-control input-sm" size="60" id="mobilephone" name="mobilephone" style="border-radius: 0;"/>
+                        </div>
+
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">固定电话：</label>
+                        <div class="col-lg-7" style="border-radius: 0;">
+                            <input type="text" class="form-control input-sm" size="60" id="telephone" name="telephone" style="border-radius: 0;"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">邮箱：</label>
+                        <div class="col-lg-7" style="border-radius: 0;">
+                            <input type="text" class="form-control input-sm" size="60" id="email" name="email" style="border-radius: 0;"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-lg-3 control-label">地址别名：</label>
+                        <div class="col-lg-7" style="border-radius: 0;">
+                            <input type="text" class="form-control input-sm" size="60" id="aliasName" name="aliasName" style="border-radius: 0;"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-9 col-lg-offset-3">
+                        <button type="button" class="btn btn-default " data-dismiss="modal" id="close1" style="border-radius: 0;">关闭</button>
+                        <button type="submit" class="btn btn-danger" style="border-radius: 0;">保存</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <script type="text/javascript">
+        $("#city").click(function (e) {
+            SelCity(this,e);
+        });
+        $('#close1').click(function(){
+        	 $('#addrModal').load($('.loadAddrModal').attr('data-url'));
+        })
+        $('.close').click(function(){
+        	 $('#addrModal').load($('.loadAddrModal').attr('data-url'));
+        })
+    </script>
+</body>
+</html>

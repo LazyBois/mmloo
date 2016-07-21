@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace必须指向Dao接口 -->
+<mapper namespace="nwsuaf.mmloo.dao.IAddressDao">
+
+	<!-- 更新地址 -->
+	<update id="updateById" parameterType="Address">
+		update address
+		set uname = #{uname,jdbcType=VARCHAR},
+		rname = #{rname,jdbcType=VARCHAR},
+		province = #{province,jdbcType=VARCHAR},
+		city = #{city,jdbcType=VARCHAR},
+		country = #{country,jdbcType=VARCHAR},
+		town = #{town,jdbcType=VARCHAR},
+		address = #{address,jdbcType=VARCHAR},
+		remail = #{remail,jdbcType=VARCHAR},
+		phone = #{phone,jdbcType=VARCHAR},
+		tel = #{tel,jdbcType=VARCHAR},
+		addressalias = #{addressalias,jdbcType=VARCHAR}
+		where addressid = #{addressid,jdbcType=INTEGER}
+	</update>
+
+	<!-- 删除 -->
+	<delete id="deleteById" parameterType="Address">
+		delete from address
+		where
+		addressid=#{addressid}
+	</delete>
+
+	<!-- 插入一条记录 -->
+	<insert id="insert" parameterType="Address" useGeneratedKeys="true"
+		keyProperty="addressid">
+		insert into address (uname, rname,
+		province, city, country,
+		town, address, remail,
+		phone, tel, addressalias
+		)
+		values (#{uname,jdbcType=VARCHAR}, #{rname,jdbcType=VARCHAR},
+		#{province,jdbcType=VARCHAR}, #{city,jdbcType=VARCHAR},
+		#{country,jdbcType=VARCHAR},
+		#{town,jdbcType=VARCHAR}, #{address,jdbcType=VARCHAR}, #{remail,jdbcType=VARCHAR},
+		#{phone,jdbcType=VARCHAR}, #{tel,jdbcType=VARCHAR},
+		#{addressalias,jdbcType=VARCHAR}
+		)
+	</insert>
+
+	<!-- 查 -->
+	<select id="selectByUname" resultType="Address" parameterType="String">
+		select * from address where uname=#{uname}
+	</select>
+
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="nwsuaf.mmloo.dao.ILogisticsDao" >
+  <select id="selectListByLogid" resultType="Logistics" parameterType="java.lang.Long" >
+    select *
+    from logistics
+    where logid = #{logid,jdbcType=BIGINT}
+  </select>
+  
+  
+  <insert id="insert" parameterType="Logistics" >
+    insert into logistics ( logid, logtime, 
+      logplace, logstate)
+    values ( #{logid,jdbcType=BIGINT}, #{logtime,jdbcType=TIMESTAMP}, 
+      #{logplace,jdbcType=VARCHAR}, #{logstate,jdbcType=VARCHAR})
+  </insert>
+ 
+  <update id="update" parameterType="Logistics" >
+    update logistics
+    <set >
+      <if test="logid != null" >
+        logid = #{logid,jdbcType=BIGINT},
+      </if>
+      <if test="logtime != null" >
+        logtime = #{logtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="logplace != null" >
+        logplace = #{logplace,jdbcType=VARCHAR},
+      </if>
+      <if test="logstate != null" >
+        logstate = #{logstate,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where kid = #{kid,jdbcType=BIGINT}
+  </update>
+</mapper>

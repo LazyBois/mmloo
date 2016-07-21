@@ -1,0 +1,32 @@
+.registerTxt{
+		display:block;
+		float:left;
+		width:200px;
+	}
+	.registerBlk{
+		display:block;
+		width:100%;
+		float:left
+	}
+	.registerSpan{
+		display:block;
+		float:left;
+		width:65px; 
+		margin-right:20px;
+		margin-top:15px
+	}
+	.registerIcon{
+		display:none;
+		float:left;
+		width:20%;
+		margin-top:15px;
+		margin-left:15px
+	}
+	.registCode{
+		display:none;
+		float:left;
+		width:20%;
+		margin-top:15px;
+		margin-left:-40px
+	}
+	
